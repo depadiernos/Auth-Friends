@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 
 export default function(props) {
-  const [friend, setFriend] = useState({
-    name: "",
-    age: "",
-    email: ""
-  });
+  const [friend, setFriend] = useState(
+    props.friend || {
+      name: "",
+      age: "",
+      email: ""
+    }
+  );
 
   const handleChange = e =>
     setFriend({ ...friend, [e.target.name]: e.target.value });
+
   return (
-    <form onSubmit={(e) => props.addFriend(e, friend)}>
+    <form onSubmit={e => {props.addOrEditFriend(e, friend); props.setIsEditing(false)}}>
       <input
         type="text"
         name="name"
@@ -18,6 +21,7 @@ export default function(props) {
         placeholder="Name"
         onChange={handleChange}
       />
+      <br />
       <input
         type="number"
         name="age"
@@ -25,6 +29,7 @@ export default function(props) {
         placeholder="Age"
         onChange={handleChange}
       />
+      <br />
       <input
         type="email"
         name="email"
@@ -32,7 +37,7 @@ export default function(props) {
         placeholder="Email"
         onChange={handleChange}
       />
-      <button type='submit'>Add</button>
+      <button type="submit">{!props.friend ? `Add` : `Save`}</button>
     </form>
   );
 }
