@@ -2,6 +2,6 @@ import React from "react"
 
 export default function FriendsList(){
     return (
-        <div></div>
+        <div>You need to be logged in to view your friends.</div>
     )
 }
