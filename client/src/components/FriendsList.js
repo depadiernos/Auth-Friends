@@ -28,12 +28,31 @@ export default function FriendsList() {
         console.log(error);
       });
   };
-  const editFriend = friend => {};
-  const deleteFriend = friend => {};
+  const editFriend = (e, friend) => {
+    e.preventDefault();
+    api()
+      .put(`/friends/${friend.id}`, friend)
+      .then(response => {
+        setFriends(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  const deleteFriend = (friend) => {
+    api()
+      .delete(`/friends/${friend.id}`)
+      .then(response => {
+        setFriends(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   return (
     <div>
-      <AddFriend addFriend={addFriend} />
+      <AddFriend addOrEditFriend={addFriend} />
       {friends &&
         friends.map(friend => (
           <Friend
