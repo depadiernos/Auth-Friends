@@ -1,21 +1,48 @@
 import React, { useState } from "react";
+import api from "../utils/axios";
 
-export default function Login(props){
-    const [credentials, setCredentials] = useState()
+export default function Login(props) {
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: ""
+  });
 
-    const handleChange = e => setCredentials({...credentials,[e.target.name]: e.target.value})
+  const [error, setError] = useState()
 
-    const handleSubmit = e => {
-        e.preventDefault()
-        props.handleLogin(credentials)
-    }
+  const handleChange = e =>
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <input type="text" name="username" placeholder="Username" value={credentials.username} onChange={handleChange}/>
-            <input type="password" name="password" placeholder="Password" value={credentials.password} onChange={handleChange}/>
+  const handleSubmit = e => {
+    e.preventDefault();
+    api()
+      .post("/login", credentials)
+      .then(response => {
+        localStorage.setItem("token", response.data.payload);
+        props.history.push("/friends");
+      })
+      .catch(error => {
+        setError(error)
+      });
+  };
 
-        </form>
-    )
-
+  return (
+    <form onSubmit={handleSubmit}>
+        {error && <div>{`${error}`}</div>}
+      <input
+        type="text"
+        name="username"
+        placeholder="Username"
+        value={credentials.username}
+        onChange={handleChange}
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        value={credentials.password}
+        onChange={handleChange}
+      />
+      <button type="submit">Login</button>
+    </form>
+  );
 }
