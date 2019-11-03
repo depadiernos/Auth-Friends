@@ -7,7 +7,7 @@ export default function Login(props) {
     password: ""
   });
 
-  const [error, setError] = useState()
+  const [error, setError] = useState();
 
   const handleChange = e =>
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -21,13 +21,13 @@ export default function Login(props) {
         props.history.push("/friends");
       })
       .catch(error => {
-        setError(error)
+        setError(error);
       });
   };
 
   return (
     <form onSubmit={handleSubmit}>
-        {error && <div>{`${error}`}</div>}
+      {error && <div>{`${error}`}</div>}
       <input
         type="text"
         name="username"
@@ -35,6 +35,7 @@ export default function Login(props) {
         value={credentials.username}
         onChange={handleChange}
       />
+      <br />
       <input
         type="password"
         name="password"
@@ -42,6 +43,7 @@ export default function Login(props) {
         value={credentials.password}
         onChange={handleChange}
       />
+      <br />
       <button type="submit">Login</button>
     </form>
   );
