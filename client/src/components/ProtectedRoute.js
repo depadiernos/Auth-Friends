@@ -1,16 +1,17 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import { getToken } from "../utils/axios";
 
 export default function ProtectedRoute({ component: Component, ...rest }) {
   return (
     <Route
       {...rest}
       render={props => {
-        localStorage.getItem("token") ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to="/login" />
-        );
+        if (getToken()) {
+          return <Component {...props} />;
+        } else {
+          return <Redirect to="/login" />;
+        }
       }}
     />
   );
